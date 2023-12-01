@@ -25,11 +25,14 @@ options = HandLandmarkerOptions(
 )
 
 for data_type in ['train', 'test']:
-    video_path_dir = Path(f'./data/raw/{data_type}') 
+    video_path_dir = Path(f'./data/raw/{data_type}')
 
     hand_landmark_features = {}
 
     for video_file_path in tqdm([*video_path_dir.iterdir()]):
+
+        if str(video_file_path.name).startswith('.'):
+            pass
 
         cap = cv.VideoCapture(str(video_file_path))
 
