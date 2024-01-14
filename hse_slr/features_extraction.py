@@ -117,7 +117,9 @@ if __name__ == '__main__':
 
     from mediapipe.tasks.python.core.base_options import BaseOptions
 
-    model_path = '/Users/lmruwork/Desktop/Education/Masters/project_year_1/hse-2023-slr/data/hand_landmarker.task'
+    data_path = Path(__file__).parent.parent / 'data'
+
+    model_path = data_path / 'hand_landmarker.task'
 
     options = HandLandmarkerOptions(
         base_options=BaseOptions(model_asset_path=model_path),
@@ -129,7 +131,7 @@ if __name__ == '__main__':
     )
 
     body_features_extractor = BodyFeaturesExtractor(
-        input_video_path='/Users/lmruwork/Desktop/Education/Masters/project_year_1/hse-2023-slr/data/raw/test/0a89730f-c271-4429-8351-fdfb2daf6b81.mp4',
+        input_video_path=data_path / 'raw/test/0a89730f-c271-4429-8351-fdfb2daf6b81.mp4',
         landmarker=HandLandmarker,
         landmarker_options=options,
         landmark_type='hand'
