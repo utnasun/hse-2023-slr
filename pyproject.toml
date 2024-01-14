@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hse-slr"
+name = "hse_slr"
 version = "0.1.0"
 description = "This Python package is designed for the recognition of Russian sign language and also comes equipped with tools for recognizing various types of body language."
 authors = ["asvistunov <aleksandrsvistunov4@gmail.com>", "utnasun <umuniev@gmail.com>"]
@@ -14,11 +14,13 @@ aiogram = "^3.3.0"
 python-dotenv = "^1.0.0"
 sqlalchemy = "^2.0.25"
 psycopg2-binary = "^2.9.9"
+prettytable = "^3.9.0"
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"
 pandas = "^2.1.4"
 tqdm = "^4.66.1"
+ipykernel = "^6.28.0"
 
 [build-system]
 requires = ["poetry-core"]

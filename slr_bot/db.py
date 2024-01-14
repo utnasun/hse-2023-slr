@@ -33,11 +33,8 @@ bot_reviews_table = Table(
     autoload_with=engine
 )
 
-stmnt = (
-    insert(bot_requests_table)
-    .values(id=1, user_id=1)
+bot_users_table = Table(
+    'bot_users',
+    MetaData(schema='public'),
+    autoload_with=engine
 )
-
-with engine.connect() as conn:
-    result = conn.execute(stmnt)
-    conn.commit()

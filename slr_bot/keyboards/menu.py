@@ -3,9 +3,10 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 def get_main_menu() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
+    kb.button(text="Разметить элементы тела на видео")
     kb.button(text="Оценить бота")
-    kb.button(text="Empty button")
-    kb.adjust(2)
+    kb.button(text="Получить аналитику об активности")
+    kb.adjust(3)
     return kb.as_markup(resize_keyboard=True)
 
 def get_rating_keyboard():
