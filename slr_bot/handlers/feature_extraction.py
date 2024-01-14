@@ -25,7 +25,7 @@ class LabelFeaturesStates(StatesGroup):
 
 
 router = Router()
-
+DATA_PATH = Path(__file__).parent.parent.parent / 'data'
 
 @router.message(F.text == "Разметить элементы тела на видео")
 async def call_label_menu(message: Message):
@@ -69,7 +69,7 @@ async def call_body_labeler(message: Message, state: FSMContext, bot: Bot):
            'landmark_type': 'hand',
            'landmarker': HandLandmarker,
            'landmarker_options': HandLandmarkerOptions(
-                base_options=BaseOptions(model_asset_path='/Users/lmruwork/Desktop/Education/Masters/project_year_1/hse-2023-slr/data/hand_landmarker.task'),
+                base_options=BaseOptions(model_asset_path=str(DATA_PATH / 'hand_landmarker.task')),
                 running_mode=RunningMode.VIDEO,
                 num_hands=2,
                 min_hand_detection_confidence=0.1,
@@ -81,7 +81,7 @@ async def call_body_labeler(message: Message, state: FSMContext, bot: Bot):
            'landmark_type': 'pose',
            'landmarker': PoseLandmarker,
            'landmarker_options': PoseLandmarkerOptions(
-                base_options=BaseOptions(model_asset_path='/Users/lmruwork/Desktop/Education/Masters/project_year_1/hse-2023-slr/data/pose_landmarker_heavy.task'),
+                base_options=BaseOptions(model_asset_path=str(DATA_PATH / 'pose_landmarker_heavy.task')),
                 running_mode=RunningMode.VIDEO,
                 num_poses=1,
                 min_tracking_confidence=0.3
