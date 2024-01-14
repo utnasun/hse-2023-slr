@@ -15,6 +15,9 @@ python-dotenv = "^1.0.0"
 sqlalchemy = "^2.0.25"
 psycopg2-binary = "^2.9.9"
 prettytable = "^3.9.0"
+onnx = "1.14.0"
+einops = "0.6.1"
+onnxruntime = "1.16.0"
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"
