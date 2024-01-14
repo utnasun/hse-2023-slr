@@ -1,10 +1,17 @@
 import os
 
 from pathlib import Path
+
 from aiogram import Router, F, Bot
 from aiogram.types import Message, FSInputFile, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+
+from mediapipe.tasks.python.vision import (
+    HandLandmarker, HandLandmarkerOptions, RunningMode,
+    PoseLandmarker, PoseLandmarkerOptions
+)
+from mediapipe.tasks.python.core.base_options import BaseOptions
 
 from keyboards.recognition_buttons import get_label_menu
 from slr_bot.keyboards.menu import get_main_menu
@@ -47,13 +54,6 @@ async def call_body_labeler(message: Message, state: FSMContext, bot: Bot):
 
     data = await state.get_data()
     landmark_type = data['landmark_type']
-
-
-    from mediapipe.tasks.python.vision import (
-        HandLandmarker, HandLandmarkerOptions, RunningMode,
-        PoseLandmarker, PoseLandmarkerOptions
-    )
-    from mediapipe.tasks.python.core.base_options import BaseOptions
 
     file_path = Path(f"{message.document.file_name}.mp4")
 
@@ -103,7 +103,8 @@ async def call_body_labeler(message: Message, state: FSMContext, bot: Bot):
     await message.answer_document(
         FSInputFile(video_file_name),
         caption="Видео с наложенной разметкой",
-        reply_markup=get_main_menu()
+        reply_markup=get_main_menu(),
+        disable_content_type_detection=True
     )
 
     await message.answer_document(
