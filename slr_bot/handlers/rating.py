@@ -1,9 +1,9 @@
-import re
-
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
+from datetime import datetime, date
 
 from keyboards.menu import get_main_menu, get_rating_keyboard
+from db import upsert_review, get_average_mark
 
 router = Router()
 
@@ -42,18 +42,23 @@ async def callbacks_num(callback: CallbackQuery):
         user_data[callback.from_user.id] = 5
         await update_num_text(callback.message, 5)
     elif action == "finish":
+        current_date = date.today()
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        upsert_review(str(callback.from_user.id), user_data[callback.from_user.id], current_date, current_datetime)
+
         await callback.message.edit_text(f"Итоговая оценка: {user_data[callback.from_user.id]}")
+
         await callback.message.answer(
          f"Выберите интересующее вас действие",
          reply_markup=get_main_menu()
-         )
+        )
 
     await callback.answer()
 
-
-# @router.message(F.text.regexp(r'[1-5]'))
-# async def answer_no(message: Message):
-#     await message.answer(
-#         f"Ваша оценка: {message.text}. Выберите следующее действие:",
-#         reply_markup=get_main_menu()
-#     )
+@router.message(F.text == "Посмотреть рейтинг бота")
+async def show_rating(message: Message):
+    mark = get_average_mark()
+    await message.answer(
+        f"Средняя оценка бота: {mark}",
+        reply_markup=get_main_menu()
+    )
