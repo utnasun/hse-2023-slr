@@ -17,7 +17,8 @@ psycopg2-binary = "^2.9.9"
 prettytable = "^3.9.0"
 onnx = "1.14.0"
 einops = "0.6.1"
-onnxruntime = "1.16.0"
+onnxruntime = {version = "1.16.0", platform = "darwin"}
+onnxruntime-openvino = {version = "1.16", platform = "linux"}
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"
