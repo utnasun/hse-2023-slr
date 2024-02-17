@@ -2,8 +2,8 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from datetime import datetime, date
 
-from keyboards.menu import get_main_menu, get_rating_keyboard
-from db import upsert_review, get_average_mark
+from slr_bot.keyboards.menu import get_main_menu, get_rating_keyboard
+from slr_bot.db import upsert_review, get_average_mark
 
 router = Router()
 

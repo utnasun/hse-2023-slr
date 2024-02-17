@@ -8,7 +8,7 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from keyboards.menu import get_main_menu
+from slr_bot.keyboards.menu import get_main_menu
 from datetime import datetime
 
 from hse_slr.models.utils import SLInference, make_prediction
