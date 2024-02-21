@@ -1,13 +1,14 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from keyboards.menu import get_main_menu
-from db import engine, bot_users_table
+from slr_bot.keyboards.menu import get_main_menu
+from slr_bot.db import engine, bot_users_table
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 
 router = Router()
+
 
 @router.message(Command("start"))
 async def cmd_start(message: Message):

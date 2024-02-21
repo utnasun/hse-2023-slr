@@ -27,6 +27,7 @@ class LabelFeaturesStates(StatesGroup):
 router = Router()
 DATA_PATH = Path(__file__).parent.parent.parent / 'data'
 
+
 @router.message(F.text == "Разметить элементы тела на видео")
 async def call_label_menu(message: Message):
 

@@ -10,6 +10,7 @@ load_dotenv('.env')
 
 logging.basicConfig(level=logging.INFO)
 
+
 async def start():
     bot = Bot(token=os.environ['BOT_TOKEN'])
     dp = Dispatcher()
