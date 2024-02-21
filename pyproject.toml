@@ -19,6 +19,11 @@ onnx = "1.14.0"
 einops = "0.6.1"
 onnxruntime = {version = "1.16.0", platform = "darwin"}
 onnxruntime-openvino = {version = "1.16", platform = "linux"}
+pytest = "^8.0.0"
+coverage = "^7.4.1"
+flake8 = "^7.0.0"
+aiogram-tests = {git = "https://github.com/Like6po/aiogram_tests.git"}
+pytest-asyncio = "^0.23.5"
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"

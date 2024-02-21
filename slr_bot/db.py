@@ -7,40 +7,75 @@ from sqlalchemy import (
     Table, MetaData,
     insert,
     func,
-    select
+    select,
+    Column,
+    Integer,
+    DateTime,
+    PrimaryKeyConstraint,
+    UniqueConstraint,
+    String,
+    Date,
+    text
 )
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 load_dotenv(Path(__file__).parent / '.env')
 
-url_object = URL.create(
-    "postgresql+psycopg2",
-    host=os.environ['DB_HOST'],
-    port=os.environ['DB_PORT'],
-    database=os.environ['DB_NAME'],
-    username=os.environ['DB_USER'],
-    password=os.environ['DB_PASSWORD'],
-)
+if os.environ.get('BOT_ENV', 'test') == 'prod':
 
-engine = create_engine(url_object)
+    url_object = URL.create(
+        "postgresql+psycopg2",
+        host=os.environ['DB_HOST'],
+        port=os.environ['DB_PORT'],
+        database=os.environ['DB_NAME'],
+        username=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+    )
+
+    engine = create_engine(url_object)
+
+elif os.environ.get('BOT_ENV') == 'test':
+
+    engine = create_engine('sqlite://')
+
+    with engine.connect() as conn:
+        conn.execute(text("attach ':memory:' as public"))
+else:
+
+    raise KeyError('BOT_ENV environment variable must be set to prod or test.')
+
+
+meta = MetaData(schema='public')
 
 bot_requests_table = Table(
     'bot_requests',
-    MetaData(schema='public'),
-    autoload_with=engine
+    meta,
+    Column('user_id', Integer, nullable=False),
+    Column('init_dttm', DateTime, default=func.now()),
+    PrimaryKeyConstraint('user_id', name='bot_requests_pkey')
 )
 
 bot_reviews_table = Table(
     'bot_reviews',
-    MetaData(schema='public'),
-    autoload_with=engine
+    meta,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('user_id', String, nullable=True),
+    Column('mark', Integer, nullable=True),
+    Column('date', Date, nullable=True),
+    Column('timestamp', DateTime, nullable=True, default=func.now()),
+    UniqueConstraint('user_id', name='bot_reviews_un')
 )
 
 bot_users_table = Table(
     'bot_users',
-    MetaData(schema='public'),
-    autoload_with=engine
+    meta,
+    Column('user_id', Integer, nullable=False),
+    Column('init_dttm', DateTime, default=func.now(), nullable=True),
+    PrimaryKeyConstraint('user_id', name='bot_users_pkey')
 )
+
+meta.create_all(bind=engine)
+
 def upsert_review(user_id, mark, date, timestamp):
     stmnt = pg_insert(bot_reviews_table).values(
         user_id=user_id, mark=mark, date=date, timestamp=timestamp
@@ -55,10 +90,11 @@ def upsert_review(user_id, mark, date, timestamp):
 
 def get_average_mark():
     with engine.connect() as conn:
-        query = select(func.round(func.avg(bot_reviews_table.c.mark), 2)) 
+        query = select(func.round(func.avg(bot_reviews_table.c.mark), 2))
         result = conn.execute(query).fetchall()[0][0]
 
         return result
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     print(get_average_mark())
