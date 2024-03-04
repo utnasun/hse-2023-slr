@@ -1,6 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+
 def get_main_menu() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="Разметить элементы тела на видео")
@@ -10,6 +11,7 @@ def get_main_menu() -> ReplyKeyboardMarkup:
     kb.button(text="Получить аналитику об активности")
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
+
 
 def get_rating_keyboard():
     buttons = [

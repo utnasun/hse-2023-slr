@@ -13,10 +13,13 @@ from sqlalchemy.engine.interfaces import CoreExecuteOptionsParameter
 from sqlalchemy import (
     create_engine, URL,
     Table, MetaData,
-    func, select,
-    Column, Integer,
-    DateTime, PrimaryKeyConstraint,
-    UniqueConstraint, String,
+    func,
+    Column,
+    Integer,
+    DateTime,
+    PrimaryKeyConstraint,
+    UniqueConstraint,
+    String,
     Date,
 )
 from sqlalchemy.dialects.postgresql import insert as pg_insert
@@ -139,6 +142,7 @@ bot_users_table = Table(
 
 meta.create_all(bind=engine)
 
+
 def upsert_review(user_id, mark, date, timestamp):
     stmnt = pg_insert(bot_reviews_table).values(
         user_id=user_id, mark=mark, date=date, timestamp=timestamp
@@ -148,16 +152,5 @@ def upsert_review(user_id, mark, date, timestamp):
     )
 
     with engine.connect() as conn:
-        result = conn.execute(stmnt)
+        conn.execute(stmnt)
         conn.commit()
-
-def get_average_mark():
-    with engine.connect() as conn:
-        query = select(func.round(func.avg(bot_reviews_table.c.mark), 2))
-        result = conn.execute(query).fetchall()[0][0]
-
-        return result
-
-
-if __name__ == '__main__':
-    print(get_average_mark())
