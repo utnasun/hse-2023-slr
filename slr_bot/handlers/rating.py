@@ -7,6 +7,7 @@ from sqlalchemy import select, func
 from slr_bot.keyboards.menu import get_main_menu, get_rating_keyboard
 from slr_bot.db import upsert_review, engine, bot_reviews_table
 
+
 router = Router()
 
 user_data = {}

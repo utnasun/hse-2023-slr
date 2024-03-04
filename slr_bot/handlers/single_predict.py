@@ -7,6 +7,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+
 from datetime import datetime
 
 from hse_slr.models.utils import SLInference, make_prediction
