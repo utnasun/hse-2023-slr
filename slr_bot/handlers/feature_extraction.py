@@ -13,7 +13,7 @@ from mediapipe.tasks.python.vision import (
 )
 from mediapipe.tasks.python.core.base_options import BaseOptions
 
-from keyboards.recognition_buttons import get_label_menu
+from slr_bot.keyboards.recognition_buttons import get_label_menu
 from slr_bot.keyboards.menu import get_main_menu
 
 from hse_slr.features_extraction import BodyFeaturesExtractor
@@ -26,6 +26,7 @@ class LabelFeaturesStates(StatesGroup):
 
 router = Router()
 DATA_PATH = Path(__file__).parent.parent.parent / 'data'
+
 
 @router.message(F.text == "Разметить элементы тела на видео")
 async def call_label_menu(message: Message):
