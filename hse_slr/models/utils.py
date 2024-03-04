@@ -51,7 +51,6 @@ class SLInference:
         """
         while self.running:
             if len(self.input_queue) == self.config["window_size"]:
-                print("I made prediction")
                 pred_dict = self.model.predict(self.input_queue)
                 if pred_dict:
                     self.pred = pred_dict["labels"][0]
@@ -84,7 +83,7 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     while True:
         success, img = cap.read()
         if not success:
-            print("Не удалось прочитать кадр из видео.")
+            print("Завершение чтения видео.")
             break
 
         img_resized = cv2.resize(img, (224, 224))
