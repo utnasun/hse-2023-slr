@@ -3,14 +3,15 @@ from aiogram.types import Message
 from aiogram.enums.parse_mode import ParseMode
 from prettytable import PrettyTable
 
-from keyboards.activity_buttons import get_activity_menu
-from db import engine, bot_users_table
+from slr_bot.keyboards.activity_buttons import get_activity_menu
+from slr_bot.db import engine, bot_users_table
 from sqlalchemy import select, func
 
 from slr_bot.keyboards.menu import get_main_menu
 
 
 router = Router()
+
 
 @router.message(F.text == "Получить аналитику об активности")
 async def call_rating_menu(message: Message):
@@ -19,6 +20,7 @@ async def call_rating_menu(message: Message):
         "Что вы хотите узнать?",
         reply_markup=get_activity_menu()
     )
+
 
 @router.message(F.text == "Количество уникальных пользователей")
 async def get_num_unique_users(message: Message):

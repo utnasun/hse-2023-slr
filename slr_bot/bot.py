@@ -4,11 +4,18 @@ import os
 
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
-from handlers import begin, rating, activity, feature_extraction, single_predict
+from slr_bot.handlers import (
+    begin,
+    rating,
+    activity,
+    feature_extraction,
+    single_predict
+)
 
 load_dotenv('.env')
 
 logging.basicConfig(level=logging.INFO)
+
 
 async def start():
     bot = Bot(token=os.environ['BOT_TOKEN'])
