@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from sqlalchemy.engine.mock import MockConnection
 from sqlalchemy.engine import url as _url
-from sqlalchemy import Executable, Sequence, util
+from sqlalchemy import Executable, util
 from sqlalchemy.engine.interfaces import _CoreAnyExecuteParams
 from sqlalchemy.engine.interfaces import CoreExecuteOptionsParameter
 

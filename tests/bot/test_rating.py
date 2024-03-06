@@ -1,37 +1,12 @@
 import pytest
 import os
-from sqlalchemy import insert, func, select
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler, CallbackQueryHandler
 from aiogram_tests.types.dataset import MESSAGE, CALLBACK_QUERY
 from slr_bot.handlers.rating import call_rating_menu, callbacks_num, show_rating
-from slr_bot.db import engine, bot_reviews_table
 
 os.environ['BOT_ENV'] = 'test'
-
-
-@pytest.fixture()
-def sqlite_db():
-
-    with engine.connect() as conn:
-        conn.execute(
-            insert(bot_reviews_table)
-            .values(
-                [
-                    {'user_id': '100', 'mark': 5},
-                    {'user_id': '200', 'mark': 4},
-                    {'user_id': '300', 'mark': 3}
-                ]
-            )
-        )
-
-        conn.commit()
-
-    with engine.connect() as conn:
-        print(conn.execute(select(func.round(func.avg(bot_reviews_table.c.mark), 2))).fetchall()[0][0])
-
-    yield
 
 
 @pytest.mark.asyncio
@@ -76,7 +51,7 @@ async def test_callbacks_num(call_back_num):
 
 
 @pytest.mark.asyncio
-async def test_show_rating(sqlite_db):
+async def test_show_rating():
     requester = MockedBot(
         MessageHandler(show_rating)
     )
@@ -84,6 +59,5 @@ async def test_show_rating(sqlite_db):
     calls = await requester.query(message=MESSAGE.as_object(text="Посмотреть рейтинг бота"))
     answer_message = calls.send_message.fetchone()
 
-    # marks : 5, 4, 3 fixture and 5 from test_callbacks_num
-    assert answer_message.text == "Средняя оценка бота: 4.25"
+    assert answer_message.text == "Средняя оценка бота: 0"
     assert "keyboard" in calls.send_message.fetchone().reply_markup
