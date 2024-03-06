@@ -1,15 +1,14 @@
 import pytest
 import os
-os.environ['BOT_ENV'] = 'test'
-
-from sqlalchemy import insert, text, select
 
 from slr_bot.handlers.activity import call_rating_menu, get_num_unique_users, get_new_users_by_dow_count
-from slr_bot.db import engine, bot_users_table, bot_users_table
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
 from aiogram_tests.types.dataset import MESSAGE
+
+
+os.environ['BOT_ENV'] = 'test'
 
 
 @pytest.mark.asyncio

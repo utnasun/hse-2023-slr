@@ -1,6 +1,5 @@
 import pytest
 import os
-os.environ['BOT_ENV'] = 'test'
 
 from pathlib import Path
 from aiogram import F
@@ -18,6 +17,8 @@ from slr_bot.handlers.feature_extraction import (
     LabelFeaturesStates
 )
 
+os.environ['BOT_ENV'] = 'test'
+
 DATA_PATH = Path(__file__).parent.parent / 'data'
 
 DOCUMENT = DatasetItem(
@@ -32,6 +33,7 @@ DOCUMENT = DatasetItem(
 )
 
 MESSAGE_WITH_DOCUMENT.data['document'] = DOCUMENT
+
 
 @pytest.mark.asyncio
 async def test_call_label_menu():
