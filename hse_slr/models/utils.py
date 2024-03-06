@@ -6,6 +6,7 @@ from pathlib import Path
 import time
 import cv2
 
+
 class SLInference:
     """
     Main prediction thread.
@@ -75,6 +76,7 @@ class SLInference:
         self.input_queue = deque(maxlen=self.config["window_size"])
         self.thread.join()
 
+
 def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     cap = cv2.VideoCapture(str(file_path))
 
@@ -98,9 +100,9 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
                 gestures_deque.append(gesture)
 
         cv2.waitKey(1)
-        
+
     cap.release()
     result = ""
     for gest in gestures_deque:
         result = result + gest + " "
-    return result 
+    return result
