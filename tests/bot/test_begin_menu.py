@@ -1,13 +1,16 @@
 import pytest
-import os
-os.environ['BOT_ENV'] = 'test'
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
 from aiogram_tests.types.dataset import MESSAGE
 
 from slr_bot.handlers.begin import cmd_start
-from slr_bot.db import engine
+from tests.bot.mock_engine import engine
+
+
+@pytest.fixture(autouse=True)
+def engine_mock(monkeypatch):
+    monkeypatch.setattr('slr_bot.handlers.begin.engine', engine)
 
 
 @pytest.mark.asyncio

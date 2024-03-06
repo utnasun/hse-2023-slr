@@ -1,14 +1,7 @@
 import os
 
 from pathlib import Path
-from typing import Any, List, Optional, Union
 from dotenv import load_dotenv
-
-from sqlalchemy.engine.mock import MockConnection
-from sqlalchemy.engine import url as _url
-from sqlalchemy import Executable, Sequence, util
-from sqlalchemy.engine.interfaces import _CoreAnyExecuteParams
-from sqlalchemy.engine.interfaces import CoreExecuteOptionsParameter
 
 from sqlalchemy import (
     create_engine, URL,
@@ -26,90 +19,16 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 load_dotenv(Path(__file__).parent / '.env')
 
-if os.environ.get('BOT_ENV', 'test') == 'prod':
+url_object = URL.create(
+    "postgresql+psycopg2",
+    host=os.environ.get('DB_HOST'),
+    port=os.environ.get('DB_PORT'),
+    database=os.environ.get('DB_NAME'),
+    username=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASSWORD'),
+)
 
-    url_object = URL.create(
-        "postgresql+psycopg2",
-        host=os.environ['DB_HOST'],
-        port=os.environ['DB_PORT'],
-        database=os.environ['DB_NAME'],
-        username=os.environ['DB_USER'],
-        password=os.environ['DB_PASSWORD'],
-    )
-
-    engine = create_engine(url_object)
-
-elif os.environ.get('BOT_ENV') == 'test':
-
-    class MockConnectionExtended(MockConnection):
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, exception_type, exception_value, traceback):
-            return self
-
-        def commit(self):
-            return self
-
-        def execute(
-            self,
-            obj: Executable,
-            parameters: Optional[_CoreAnyExecuteParams] = None,
-            execution_options: Optional[CoreExecuteOptionsParameter] = None,
-        ) -> Any:
-            self.obj = obj
-            return super().execute(obj, parameters, execution_options)
-
-    def create_mock_engine(
-        url: Union[str, URL],
-        executor: Any,
-        mock_connection: MockConnection,
-        **kw: Any
-    ) -> MockConnection:
-
-        # create url.URL object
-        u = _url.make_url(url)
-
-        dialect_cls = u.get_dialect()
-
-        dialect_args = {}
-        # consume dialect arguments from kwargs
-        for k in util.get_cls_kwargs(dialect_cls):
-            if k in kw:
-                dialect_args[k] = kw.pop(k)
-
-        # create dialect
-        dialect = dialect_cls(**dialect_args)
-
-        return mock_connection(dialect, executor)
-
-    class MockFetch:
-
-        def __init__(self, sql) -> None:
-            self.sql = sql
-
-        def fetchall(self) -> List[List]:
-            columns = len(self.sql.selected_columns.keys())
-            return [[*range(columns)]]
-
-        def scalar_one(self):
-            return 1
-
-    def fetch_range_row(sql, *multiparams, **params):
-        print(sql.compile(dialect=engine.dialect))
-        return MockFetch(sql)
-
-    engine = create_mock_engine(
-        'postgresql+psycopg2://',
-        fetch_range_row,
-        MockConnectionExtended
-    )
-
-else:
-
-    raise KeyError('BOT_ENV environment variable must be set to prod or test.')
-
+engine = create_engine(url_object)
 
 meta = MetaData(schema='public')
 
@@ -139,8 +58,6 @@ bot_users_table = Table(
     Column('init_dttm', DateTime, default=func.now(), nullable=True),
     PrimaryKeyConstraint('user_id', name='bot_users_pkey')
 )
-
-meta.create_all(bind=engine)
 
 
 def upsert_review(user_id, mark, date, timestamp):
