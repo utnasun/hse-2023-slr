@@ -1,18 +1,21 @@
 import pytest
-import os
 
 from slr_bot.handlers.activity import call_rating_menu, get_num_unique_users, get_new_users_by_dow_count
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
 from aiogram_tests.types.dataset import MESSAGE
+from tests.bot.mock_engine import engine
 
 
-os.environ['BOT_ENV'] = 'test'
+@pytest.fixture(autouse=True)
+def engine_mock(monkeypatch):
+    monkeypatch.setattr('slr_bot.handlers.activity.engine', engine)
 
 
 @pytest.mark.asyncio
 async def test_call_rating_menu():
+
     request = MockedBot(MessageHandler(call_rating_menu))
     calls = await request.query(message=MESSAGE.as_object(text="Получить аналитику об активности"))
     answer_message = calls.send_message.fetchone()
