@@ -5,10 +5,10 @@ import mediapipe as mp
 
 from mediapipe.framework.formats import landmark_pb2
 
-MARGIN = 10  # pixels
+MARGIN = 10
 FONT_SIZE = 1
 FONT_THICKNESS = 1
-HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
+HANDEDNESS_TEXT_COLOR = (88, 205, 54)
 
 
 def draw_landmarks_on_image(
@@ -16,7 +16,8 @@ def draw_landmarks_on_image(
       detection_result: dict,
       landmark_type: Literal['pose', 'hand']):
     """
-    Courtesy of https://github.com/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
+    Courtesy
+    of https://github.com/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
     """
 
     landmarks = detection_result[landmark_type + '_landmarks']

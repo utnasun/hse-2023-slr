@@ -1,5 +1,4 @@
 import pytest
-import os
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
@@ -12,8 +11,6 @@ from tests.bot.mock_engine import engine
 @pytest.fixture(autouse=True)
 def engine_mock(monkeypatch):
     monkeypatch.setattr('slr_bot.handlers.begin.engine', engine)
-
-os.environ['BOT_ENV'] = 'test'
 
 
 @pytest.mark.asyncio

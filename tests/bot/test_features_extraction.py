@@ -1,12 +1,12 @@
 import pytest
 import os
 
-from pathlib import Path
 from aiogram import F
-from aiogram import types
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
-from aiogram_tests.types.dataset import MESSAGE, MESSAGE_WITH_DOCUMENT, DatasetItem
+from aiogram_tests.types.dataset import MESSAGE
+from tests.bot.mock_datasets import MESSAGE_WITH_DOCUMENT
+
 from aiogram.client.bot import Bot
 
 from hse_slr.features_extraction import BodyFeaturesExtractor
@@ -16,23 +16,6 @@ from slr_bot.handlers.feature_extraction import (
     call_body_labeler,
     LabelFeaturesStates
 )
-
-os.environ['BOT_ENV'] = 'test'
-
-DATA_PATH = Path(__file__).parent.parent / 'data'
-
-DOCUMENT = DatasetItem(
-    {
-        "file_name": str(DATA_PATH / 'raw/test/0a89730f-c271-4429-8351-fdfb2daf6b81'),
-        "mime_type": "video/quicktime",
-        "file_id": "BQADAgADpgADy_JxS66XQTBRHFleAg",
-        "file_unique_id": "file_unique_id",
-        "file_size": 21331,
-    },
-    model=types.Document,
-)
-
-MESSAGE_WITH_DOCUMENT.data['document'] = DOCUMENT
 
 
 @pytest.mark.asyncio

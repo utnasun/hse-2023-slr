@@ -3,10 +3,13 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-from aiogram import types, F
+from aiogram import F
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
-from aiogram_tests.types.dataset import MESSAGE, MESSAGE_WITH_DOCUMENT, DatasetItem
+
+from tests.bot.mock_datasets import MESSAGE_WITH_DOCUMENT
+from aiogram_tests.types.dataset import MESSAGE
+
 from aiogram.client.bot import Bot
 
 from slr_bot.handlers.single_predict import (
@@ -15,21 +18,6 @@ from slr_bot.handlers.single_predict import (
     video_downloaded,
     PredictVideo
 )
-
-DATA_PATH = Path(__file__).parent.parent.parent / 'data'
-
-DOCUMENT = DatasetItem(
-    {
-        "file_name": str(DATA_PATH / 'raw/test/0a89730f-c271-4429-8351-fdfb2daf6b81'),
-        "mime_type": "video/quicktime",
-        "file_id": "BQADAgADpgADy_JxS66XQTBRHFleAg",
-        "file_unique_id": "file_unique_id",
-        "file_size": 21331,
-    },
-    model=types.Document,
-)
-
-MESSAGE_WITH_DOCUMENT.data['document'] = DOCUMENT
 
 
 @pytest.mark.asyncio

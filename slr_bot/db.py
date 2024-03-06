@@ -21,11 +21,11 @@ load_dotenv(Path(__file__).parent / '.env')
 
 url_object = URL.create(
     "postgresql+psycopg2",
-    host=os.environ['DB_HOST'],
-    port=os.environ['DB_PORT'],
-    database=os.environ['DB_NAME'],
-    username=os.environ['DB_USER'],
-    password=os.environ['DB_PASSWORD'],
+    host=os.environ.get('DB_HOST'),
+    port=os.environ.get('DB_PORT'),
+    database=os.environ.get('DB_NAME'),
+    username=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASSWORD'),
 )
 
 engine = create_engine(url_object)

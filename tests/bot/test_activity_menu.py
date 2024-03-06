@@ -36,7 +36,19 @@ async def test_get_num_unique_users():
 async def test_get_new_users_by_dow_count():
     request = MockedBot(MessageHandler(get_new_users_by_dow_count))
 
-    calls = await request.query(message=MESSAGE.as_object(text="Суммарное количество новых пользователей по дням недели"))
+    calls = await request.query(
+        message=MESSAGE.as_object(text="Суммарное количество новых пользователей по дням недели")
+    )
     answer_message = calls.send_message.fetchone()
 
-    assert answer_message.text == '\n        Суммарное количество новых пользователей по дням недели:\n        <pre>+-------------+------------+\n| День недели | Количество |\n+-------------+------------+\n|      0      |     1      |\n+-------------+------------+</pre>\n        '
+    assert (
+        answer_message.text == '\n        '
+        + 'Суммарное количество новых пользователей по дням недели:\n'
+        + '        '
+        + '<pre>+-------------+------------+\n'
+        + '| День недели | Количество |'
+        + '\n+-------------+------------+\n'
+        + '|      0      |     1      |'
+        + '\n+-------------+------------+</pre>\n'
+        + '        '
+    )

@@ -1,12 +1,16 @@
 import pytest
-import os
+
 
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler, CallbackQueryHandler
 from aiogram_tests.types.dataset import MESSAGE, CALLBACK_QUERY
 from slr_bot.handlers.rating import call_rating_menu, callbacks_num, show_rating
+from tests.bot.mock_engine import engine
 
-os.environ['BOT_ENV'] = 'test'
+
+@pytest.fixture(autouse=True)
+def engine_mock(monkeypatch):
+    monkeypatch.setattr('slr_bot.handlers.rating.engine', engine)
 
 
 @pytest.mark.asyncio
@@ -25,7 +29,11 @@ async def test_call_menu_handler():
 
 @pytest.mark.parametrize("call_back_num", ['num_one', 'num_two', 'num_three', 'num_four', 'num_five'])
 @pytest.mark.asyncio
-async def test_callbacks_num(call_back_num):
+async def test_callbacks_num(call_back_num, monkeypatch):
+    def mock_upsert(*args):
+        return True
+
+    monkeypatch.setattr('slr_bot.handlers.rating.upsert_review', mock_upsert)
 
     requester = MockedBot(
         CallbackQueryHandler(callbacks_num)
