@@ -59,6 +59,15 @@ bot_users_table = Table(
     PrimaryKeyConstraint('user_id', name='bot_users_pkey')
 )
 
+app_users_table = Table(
+    'app_users',
+    meta,
+    Column('user_id', Integer, autoincrement=True, nullable=False),
+    Column('init_dttm', DateTime, default=func.now(), nullable=True),
+    PrimaryKeyConstraint('user_id', name='app_users_pkey')
+)
+
+meta.create_all(bind=engine)
 
 def upsert_review(user_id, mark, date, timestamp):
     stmnt = pg_insert(bot_reviews_table).values(
