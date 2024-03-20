@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from slr_app.routers import activity, begin, feature_extraction, recognize
+from slr_app.routers import activity, begin, feature_extraction, recognize, rating
 from hse_slr.models.utils import SLInference
 
 
@@ -23,3 +23,4 @@ app.include_router(activity.router)
 app.include_router(begin.router)
 app.include_router(feature_extraction.router)
 app.include_router(recognize.router)
+app.include_router(rating.router)

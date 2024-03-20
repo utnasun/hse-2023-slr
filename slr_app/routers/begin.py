@@ -20,10 +20,11 @@ def begin(response: Response, request: Request):
         )
 
         with engine.connect() as conn:
-            conn.execute(insert_user)
+            result = conn.execute(insert_user)
             conn.commit()
 
         response.set_cookie('_is_registed', True)
+        response.set_cookie('user_id', result.inserted_primary_key)
 
         return "Successfully started a session"
 
