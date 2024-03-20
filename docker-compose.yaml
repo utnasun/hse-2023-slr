@@ -1,0 +1,27 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: app
+
+  redis:
+    image: redis
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+
+volumes:
+  postgres_volume:
