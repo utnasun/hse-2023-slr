@@ -3,9 +3,9 @@ import onnxruntime as rt
 from einops import rearrange
 import numpy as np
 
-if platform in {"win32", "win64"}:
-    import onnxruntime.tools.add_openvino_win_libs as utils
-    utils.add_openvino_libs_to_path()
+# if platform in {"win32", "win64"}:
+#     import onnxruntime.tools.add_openvino_win_libs as utils
+#     utils.add_openvino_libs_to_path()
 
 
 class Predictor:

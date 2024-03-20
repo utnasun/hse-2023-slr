@@ -5,6 +5,9 @@ from hse_slr.models.model import Predictor
 from pathlib import Path
 import time
 import cv2
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class SLInference:
@@ -85,7 +88,7 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     while True:
         success, img = cap.read()
         if not success:
-            print("Завершение чтения видео.")
+            logging.info("Завершение чтения видео.")
             break
 
         img_resized = cv2.resize(img, (224, 224))
@@ -105,4 +108,5 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     result = ""
     for gest in gestures_deque:
         result = result + gest + " "
+    logging.info(f'Результат распознавания: {result}')
     return result
