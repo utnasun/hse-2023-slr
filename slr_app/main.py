@@ -19,8 +19,8 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(activity.router)
 app.include_router(begin.router)
+app.include_router(activity.router)
 app.include_router(feature_extraction.router)
 app.include_router(recognize.router)
 app.include_router(rating.router)
