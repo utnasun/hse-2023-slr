@@ -8,7 +8,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-mediapipe = "^0.10.9"
 opencv-python = "^4.9.0.80"
 aiogram = "^3.3.0"
 python-dotenv = "^1.0.0"
@@ -17,14 +16,17 @@ psycopg2-binary = "^2.9.9"
 prettytable = "^3.9.0"
 onnx = "1.14.0"
 einops = "0.6.1"
-onnxruntime = {version = "1.16.0", platform = "darwin"}
-onnxruntime-openvino = {version = "1.16", platform = "linux"}
+onnxruntime = {version = "1.16.0"}
 pytest = "^8.0.0"
 coverage = "^7.4.1"
 flake8 = "^7.0.0"
 aiogram-tests = {git = "https://github.com/Like6po/aiogram_tests.git"}
 pytest-asyncio = "^0.23.5"
 ipywidgets = "^8.1.2"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
+python-multipart = "^0.0.9"
+mediapipe = "0.10.9"
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"
