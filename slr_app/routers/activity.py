@@ -2,6 +2,7 @@ import pandas as pd
 
 from fastapi import Response, APIRouter
 from fastapi.responses import JSONResponse
+from fastapi_cache.decorator import cache
 
 from slr_bot.db import engine, app_users_table
 from sqlalchemy import select, func
@@ -13,6 +14,7 @@ router = APIRouter(
 
 
 @router.get('/unique_users')
+@cache(expire=30)
 def get_num_unique_users():
 
     num_unique_users_statement = (
@@ -29,6 +31,7 @@ def get_num_unique_users():
 
 
 @router.get('/new_users_by_dow')
+@cache(expire=30)
 def get_new_users_by_dow_count():
 
     extract_dow_func = func.extract('isodow', app_users_table.c.init_dttm)

@@ -3,6 +3,7 @@ from sqlalchemy import select, func
 from datetime import datetime, date
 from fastapi import APIRouter, Response, Request
 from fastapi.responses import JSONResponse
+from fastapi_cache.decorator import cache
 
 from slr_bot.db import app_upsert_review, engine, app_reviews_table
 
@@ -22,6 +23,7 @@ def make_review(response: Response, mark: int, request: Request):
 
 
 @router.get('/get_rating')
+@cache(expire=30)
 def get_average_rating():
 
     with engine.connect() as conn:
