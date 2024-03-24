@@ -16,7 +16,7 @@ psycopg2-binary = "^2.9.9"
 prettytable = "^3.9.0"
 onnx = "1.14.0"
 einops = "0.6.1"
-onnxruntime = {version = "1.16.0", platform = "darwin"}
+onnxruntime = {version = "1.16.0"}
 pytest = "^8.0.0"
 coverage = "^7.4.1"
 flake8 = "^7.0.0"

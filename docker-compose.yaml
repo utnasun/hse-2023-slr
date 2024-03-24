@@ -12,6 +12,8 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: app
+    ports:
+      - 5432:5432
 
   redis:
     image: redis
@@ -22,6 +24,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:80
+    env_file:
+      - .env
+    
+    depends_on:
+      db:
+        condition: service_started
 
 volumes:
   postgres_volume:
