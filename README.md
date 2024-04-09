@@ -22,6 +22,15 @@
 * **Telegram бот**
   - [Описание функционала](https://github.com/utnasun/hse-2023-slr/blob/main/slr_bot/README.md)
   - Ссылка на [бота](https://t.me/signlingo_bot)
+  <details>
+  <summary>Примеры работы бота</summary>
+  
+  ![Alt text](https://media.giphy.com/media/vMIea391Ph7pAQX4Hf/giphy.gif)
+  ![Alt text](https://media.giphy.com/media/LLk3Fscbdjpm9yUTvR/giphy.gif)
+  ![Alt text](https://media.giphy.com/media/i5S8FNDf5ZUAxUA7Yi/giphy.gif)
+</details>
+
+
 * **FastAPI**
   - [Документация FastAPI](http://5.228.202.197/docs)
   - Ссылка на [API](http://5.228.202.197:80/)
