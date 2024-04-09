@@ -1,16 +1,15 @@
-from sqlalchemy import URL
-
-from sqlalchemy.engine.mock import MockConnection
-from sqlalchemy import Executable, util
-from sqlalchemy.engine.interfaces import _CoreAnyExecuteParams
-from sqlalchemy.engine.interfaces import CoreExecuteOptionsParameter
-from sqlalchemy.engine import url as _url
-
 from typing import Any, List, Optional, Union
+
+from sqlalchemy import URL, Executable, util
+from sqlalchemy.engine import url as _url
+from sqlalchemy.engine.interfaces import (
+    CoreExecuteOptionsParameter,
+    _CoreAnyExecuteParams,
+)
+from sqlalchemy.engine.mock import MockConnection
 
 
 class MockConnectionExtended(MockConnection):
-
     def __enter__(self):
         return self
 
@@ -31,12 +30,8 @@ class MockConnectionExtended(MockConnection):
 
 
 def create_mock_engine(
-    url: Union[str, URL],
-    executor: Any,
-    mock_connection: MockConnection,
-    **kw: Any
+    url: Union[str, URL], executor: Any, mock_connection: MockConnection, **kw: Any
 ) -> MockConnection:
-
     # create url.URL object
     u = _url.make_url(url)
 
@@ -55,7 +50,6 @@ def create_mock_engine(
 
 
 class MockFetch:
-
     def __init__(self, sql) -> None:
         self.sql = sql
 
@@ -73,7 +67,5 @@ def fetch_range_row(sql, *multiparams, **params):
 
 
 engine = create_mock_engine(
-    'postgresql+psycopg2://',
-    fetch_range_row,
-    MockConnectionExtended
+    "postgresql+psycopg2://", fetch_range_row, MockConnectionExtended
 )

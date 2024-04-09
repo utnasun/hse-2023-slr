@@ -1,12 +1,11 @@
-from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
-from datetime import datetime, date
-from sqlalchemy import select, func
+from datetime import date, datetime
 
+from aiogram import F, Router
+from aiogram.types import CallbackQuery, Message
+from sqlalchemy import func, select
 
+from slr_bot.db import bot_reviews_table, engine, upsert_review
 from slr_bot.keyboards.menu import get_main_menu, get_rating_keyboard
-from slr_bot.db import upsert_review, engine, bot_reviews_table
-
 
 router = Router()
 
@@ -17,15 +16,14 @@ user_data = {}
 async def call_rating_menu(message: Message):
     user_data[message.from_user.id] = 0
     await message.answer(
-        "Выберите оценку бота от 1 до 5:",
-        reply_markup=get_rating_keyboard()
+        "Выберите оценку бота от 1 до 5:", reply_markup=get_rating_keyboard()
     )
 
 
 async def update_num_text(message: Message, new_value: int):
     await message.edit_text(
-        f"Ваша оценка: {new_value}. Нажмите \"Подтвердить\", если согласны с оценкой.",
-        reply_markup=get_rating_keyboard()
+        f'Ваша оценка: {new_value}. Нажмите "Подтвердить", если согласны с оценкой.',
+        reply_markup=get_rating_keyboard(),
     )
 
 
@@ -50,23 +48,28 @@ async def callbacks_num(callback: CallbackQuery):
     elif action == "finish":
         current_date = date.today()
         current_datetime = datetime.now()
-        upsert_review(str(callback.from_user.id), user_data[callback.from_user.id], current_date, current_datetime)
+        upsert_review(
+            str(callback.from_user.id),
+            user_data[callback.from_user.id],
+            current_date,
+            current_datetime,
+        )
 
-        await callback.message.edit_text(f"Итоговая оценка: {user_data[callback.from_user.id]}")
+        await callback.message.edit_text(
+            f"Итоговая оценка: {user_data[callback.from_user.id]}"
+        )
 
-        await callback.message.answer("Выберите интересующее вас действие", reply_markup=get_main_menu())
+        await callback.message.answer(
+            "Выберите интересующее вас действие", reply_markup=get_main_menu()
+        )
 
     await callback.answer()
 
 
 @router.message(F.text == "Посмотреть рейтинг бота")
 async def show_rating(message: Message):
-
     with engine.connect() as conn:
         query = select(func.round(func.avg(bot_reviews_table.c.mark), 2))
         mark = conn.execute(query).fetchall()[0][0]
 
-    await message.answer(
-        f"Средняя оценка бота: {mark}",
-        reply_markup=get_main_menu()
-    )
+    await message.answer(f"Средняя оценка бота: {mark}", reply_markup=get_main_menu())
