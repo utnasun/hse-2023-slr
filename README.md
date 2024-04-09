@@ -10,6 +10,22 @@
 
 Куратор: **Кофанова Мария**
 
+
+## Инструкция по запуску проекта
+
+* Скачать MediaPipe модели для разметки [рук](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task) и [тела](https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task). Перенести их в директорию `data/`.
+* Создать `.env` файл с указанием переменной `BOT_TOKEN` для телеграм-бота и переменных базы данных: ```DB_NAME```, ```DB_POST```, ```DB_PORT```, ```DB_USER```, ```DB_PASSWORD```.
+* Запустить `docker compose up`.
+
+## Сервисы
+
+* **Telegram бот**
+  - [Описание функционала](https://github.com/utnasun/hse-2023-slr/blob/main/slr_bot/README.md)
+  - Ссылка на [бота](https://t.me/signlingo_bot)
+* **FastAPI**
+  - [Документация FastAPI](http://5.228.202.197/docs)
+  - Ссылка на [API](http://5.228.202.197:80/)
+ 
 ## План работы
 1. Анализ датасета
     * Изучение содержимого датасета
@@ -31,7 +47,3 @@
 ## Данные
 Для нашего проекта мы будем использовать готовый датасет [Slovo](https://github.com/hukenovs/slovo). Он состоит из 20.000 *видео* - по 20 видео на один из 1000 *классов* (жестов). В датасете присутствуют дополнительные 400 видео, на которых не происходит жестовых событий, чтобы ввести понятие класса "не жест". \
 Данные можно скачать по [ссылке](https://disk.yandex.ru/d/MaC0HtdRFmKtJg).
-
-## Сервис
-
-[Описание сервиса.](https://github.com/utnasun/hse-2023-slr/blob/2fc294a142a45578e35b941c064ad2e1972dfa59/slr_bot/README.md)
