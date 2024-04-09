@@ -1,5 +1,4 @@
 import pytest
-
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
 from aiogram_tests.types.dataset import MESSAGE
@@ -10,7 +9,7 @@ from tests.bot.mock_engine import engine
 
 @pytest.fixture(autouse=True)
 def engine_mock(monkeypatch):
-    monkeypatch.setattr('slr_bot.handlers.begin.engine', engine)
+    monkeypatch.setattr("slr_bot.handlers.begin.engine", engine)
 
 
 @pytest.mark.asyncio

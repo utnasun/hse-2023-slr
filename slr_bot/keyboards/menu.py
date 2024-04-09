@@ -1,4 +1,8 @@
-from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ReplyKeyboardMarkup,
+)
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
@@ -20,9 +24,9 @@ def get_rating_keyboard():
             InlineKeyboardButton(text="2", callback_data="num_two"),
             InlineKeyboardButton(text="3", callback_data="num_three"),
             InlineKeyboardButton(text="4", callback_data="num_four"),
-            InlineKeyboardButton(text="5", callback_data="num_five")
+            InlineKeyboardButton(text="5", callback_data="num_five"),
         ],
-        [InlineKeyboardButton(text="Подтвердить", callback_data="num_finish")]
+        [InlineKeyboardButton(text="Подтвердить", callback_data="num_finish")],
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

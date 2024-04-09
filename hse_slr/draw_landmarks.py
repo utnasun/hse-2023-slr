@@ -1,8 +1,7 @@
 from typing import Literal
 
-import numpy as np
 import mediapipe as mp
-
+import numpy as np
 from mediapipe.framework.formats import landmark_pb2
 
 MARGIN = 10
@@ -12,18 +11,29 @@ HANDEDNESS_TEXT_COLOR = (88, 205, 54)
 
 
 def draw_landmarks_on_image(
-      rgb_image: np.array,
-      detection_result: dict,
-      landmark_type: Literal['pose', 'hand']):
+    rgb_image: np.array, detection_result: dict, landmark_type: Literal["pose", "hand"]
+) -> np.array:
     """
-    Courtesy
-    of https://github.com/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
+    Draw landmarks on images from feature extractors.
+
+    Parameters
+    ----------
+    rgb_image : np.array
+        Image array.
+    detection_result : dict
+        Result of feature extractor.
+    landmark_type : Literal'pose', 'hand']
+        Type of landmarks, could be one of ['pose', 'hands']
+
+    Returns
+    -------
+    np.array
+        Annotated image array.
     """
 
-    landmarks = detection_result[landmark_type + '_landmarks']
+    landmarks = detection_result[landmark_type + "_landmarks"]
 
     try:
-
         if landmarks == []:
             return rgb_image
 
@@ -39,32 +49,28 @@ def draw_landmarks_on_image(
                 landmarks_proto.landmark.extend(
                     [
                         landmark_pb2.NormalizedLandmark(
-                            x=landmark['x'],
-                            y=landmark['y'],
-                            z=landmark['z']
-                        ) for landmark in landmarks_
+                            x=landmark["x"], y=landmark["y"], z=landmark["z"]
+                        )
+                        for landmark in landmarks_
                     ]
                 )
 
                 match landmark_type:
-
-                    case 'hand':
-
+                    case "hand":
                         mp.solutions.drawing_utils.draw_landmarks(
                             annotated_image,
                             landmarks_proto,
                             mp.solutions.hands.HAND_CONNECTIONS,
                             mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
-                            mp.solutions.drawing_styles.get_default_hand_connections_style()
+                            mp.solutions.drawing_styles.get_default_hand_connections_style(),
                         )
 
-                    case 'pose':
-
+                    case "pose":
                         mp.solutions.drawing_utils.draw_landmarks(
                             annotated_image,
                             landmarks_proto,
                             mp.solutions.pose.POSE_CONNECTIONS,
-                            mp.solutions.drawing_styles.get_default_pose_landmarks_style()
+                            mp.solutions.drawing_styles.get_default_pose_landmarks_style(),
                         )
 
             return annotated_image

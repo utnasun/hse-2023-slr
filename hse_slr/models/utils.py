@@ -1,11 +1,13 @@
-from collections import deque
 import json
-from threading import Thread
-from hse_slr.models.model import Predictor
-from pathlib import Path
-import time
-import cv2
 import logging
+import time
+from collections import deque
+from pathlib import Path
+from threading import Thread
+
+import cv2
+
+from hse_slr.models.model import Predictor
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,6 +24,7 @@ class SLInference:
         pred (str): The prediction result.
         thread (Thread): The worker thread.
     """
+
     def __init__(self, config_path):
         """
         Initialize the SLInference object.
@@ -81,6 +84,21 @@ class SLInference:
 
 
 def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
+    """
+    Perform gesture prediction on a video file.
+
+    Parameters
+    ----------
+    inference_thread : SLInference
+        A thread for performing gesture inference.
+    file_path : Path
+        Path to the video file for gesture prediction.
+
+    Returns
+    -------
+    str
+    Predicted gestures concatenated as a single string.
+    """
     cap = cv2.VideoCapture(str(file_path))
 
     gestures_deque = deque(maxlen=10)
@@ -96,7 +114,7 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
 
         gesture = inference_thread.pred
 
-        if gesture not in ['no', '']:
+        if gesture not in ["no", ""]:
             if not gestures_deque:
                 gestures_deque.append(gesture)
             elif gesture != gestures_deque[-1]:
@@ -108,5 +126,5 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     result = ""
     for gest in gestures_deque:
         result = result + gest + " "
-    logging.info(f'Результат распознавания: {result}')
+    logging.info(f"Результат распознавания: {result}")
     return result

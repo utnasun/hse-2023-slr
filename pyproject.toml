@@ -29,6 +29,7 @@ python-multipart = "^0.0.9"
 mediapipe = "0.10.9"
 redis = "^5.0.3"
 fastapi-cache2 = "^0.2.1"
+pre-commit = "^3.7.0"
 
 [tool.poetry.group.dev.dependencies]
 matplotlib = "^3.8.2"

@@ -19,7 +19,7 @@ services:
     image: redis
     ports:
       - 6379:6379
-  
+
   app:
     build:
       context: .
@@ -28,10 +28,27 @@ services:
       - 80:80
     env_file:
       - .env
-    
+
     depends_on:
       db:
         condition: service_started
+      bot:
+        condition: service_started
+
+    command: uvicorn slr_app.main:app --host 0.0.0.0 --port 80
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+
+    depends_on:
+      db:
+        condition: service_started
+
+    command: python3 ./slr_bot/bot.py
 
 volumes:
   postgres_volume:
