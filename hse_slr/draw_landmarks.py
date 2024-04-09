@@ -14,11 +14,25 @@ HANDEDNESS_TEXT_COLOR = (88, 205, 54)
 def draw_landmarks_on_image(
       rgb_image: np.array,
       detection_result: dict,
-      landmark_type: Literal['pose', 'hand']):
-    """
-    Courtesy
-    of https://github.com/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
-    """
+      landmark_type: Literal['pose', 'hand']
+    ) -> np.array:
+    '''
+    Draw landmarks on images from feature extractors.
+
+    Parameters
+    ----------
+    rgb_image : np.array
+        Image array.
+    detection_result : dict
+        Result of feature extractor.
+    landmark_type : Literal'pose', 'hand']
+        Type of landmarks, could be one of ['pose', 'hands']
+
+    Returns
+    -------
+    np.array
+        Annotated image array.
+    '''
 
     landmarks = detection_result[landmark_type + '_landmarks']
 
