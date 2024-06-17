@@ -1,5 +1,13 @@
 import json
+
 import logging
+
+from threading import Thread
+from hse_slr.models.model import Predictor
+from pathlib import Path
+from omegaconf import OmegaConf
+from hse_slr.recognition import Runner
+
 import time
 from collections import deque
 from pathlib import Path
@@ -101,30 +109,16 @@ def make_prediction(inference_thread: SLInference, file_path: Path) -> str:
     """
     cap = cv2.VideoCapture(str(file_path))
 
-    gestures_deque = deque(maxlen=10)
+    mp = False # Enable multiprocessing
+    verbose = False # Enable logging
+    length = 1000 # Deque length for predictions
 
-    while True:
-        success, img = cap.read()
-        if not success:
-            logging.info("Завершение чтения видео.")
-            break
+    conf = OmegaConf.load("/Users/lmruwork/Desktop/Education/Masters/hse-2023-slr/configs/s3d_32_1_conf.yaml")
+    runner = Runner(conf.model_path, conf, mp, verbose, length)
 
-        img_resized = cv2.resize(img, (224, 224))
-        inference_thread.input_queue.append(img_resized)
+    predictions = runner.run(file_path)
 
-        gesture = inference_thread.pred
+    logging.info(f"Результат распознавания: {predictions}")
 
-        if gesture not in ["no", ""]:
-            if not gestures_deque:
-                gestures_deque.append(gesture)
-            elif gesture != gestures_deque[-1]:
-                gestures_deque.append(gesture)
+    return predictions
 
-        cv2.waitKey(1)
-
-    cap.release()
-    result = ""
-    for gest in gestures_deque:
-        result = result + gest + " "
-    logging.info(f"Результат распознавания: {result}")
-    return result

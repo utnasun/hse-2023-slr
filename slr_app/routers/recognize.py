@@ -20,6 +20,7 @@ router = APIRouter(
 @router.post("/recognize")
 async def recognize(request: Request, file: UploadFile = File(...)):
     file_path = Path("./uploads") / file.filename
+
     with file_path.open("wb") as buffer:
         buffer.write(await file.read())
 
@@ -28,4 +29,4 @@ async def recognize(request: Request, file: UploadFile = File(...)):
     )
 
     os.remove(file_path)
-    return PlainTextResponse(content=result)
+    return PlainTextResponse(content=' '.join(result))
