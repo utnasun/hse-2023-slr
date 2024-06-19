@@ -11,4 +11,4 @@ WORKDIR /project
 
 RUN pip install wheel setuptools pip --upgrade && \
     pip install -r requirements.txt && \
-    pip install --no-cache-dir --upgrade -e .
+    pip install  -e .

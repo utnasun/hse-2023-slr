@@ -1,3 +1,6 @@
+import os
+from slr_bot import session
+
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -11,15 +14,19 @@ router = Router()
 
 @router.message(Command("start"))
 async def cmd_start(message: Message):
-    insert_user = (
-        pg_insert(bot_users_table)
-        .values(user_id=message.from_user.id)
-        .on_conflict_do_nothing(index_elements=["user_id"])
-    )
+    # insert_user = (
+    #     pg_insert(bot_users_table)
+    #     .values(user_id=message.from_user.id)
+    #     .on_conflict_do_nothing(index_elements=["user_id"])
+    # )
 
-    with engine.connect() as conn:
-        conn.execute(insert_user)
-        conn.commit()
+    # with engine.connect() as conn:
+    #     conn.execute(insert_user)
+    #     conn.commit()
+
+    response = session.get(f'http://{os.environ["APP_HOST"]}/')
+
+    print(response.text)
 
     await message.answer(
         "Выберите интересующее вас действие", reply_markup=get_main_menu()

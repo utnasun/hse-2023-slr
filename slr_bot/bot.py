@@ -5,7 +5,7 @@ import os
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 
-from slr_bot.handlers import activity, begin, feature_extraction, rating, single_predict
+from slr_bot.handlers import activity, begin, rating, single_predict
 
 load_dotenv(".env")
 
@@ -20,7 +20,7 @@ async def start():
         begin.router,
         rating.router,
         activity.router,
-        feature_extraction.router,
+        # feature_extraction.router,
         single_predict.router,
     )
 

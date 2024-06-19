@@ -1,3 +1,5 @@
+import os 
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -5,17 +7,16 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 
-from hse_slr.models.utils import SLInference
-from slr_app.routers import activity, begin, feature_extraction, rating, recognize
+from slr_app.routers import activity, begin, rating, recognize
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.inference_thread = SLInference(recognize.CONFIG_PATH)
-    redis = aioredis.from_url("redis://redis", encoding="utf8", decode_responses=True)
+
+    redis = aioredis.from_url(f"redis://{os.environ['REDIS_HOST']}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
     yield
-    del app.state.inference_thread
+    # del app.state.inference_thread
 
 
 app = FastAPI(
@@ -28,6 +29,5 @@ app = FastAPI(
 
 app.include_router(begin.router)
 app.include_router(activity.router)
-app.include_router(feature_extraction.router)
 app.include_router(recognize.router)
 app.include_router(rating.router)

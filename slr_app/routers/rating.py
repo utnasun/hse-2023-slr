@@ -7,6 +7,7 @@ from fastapi_cache.decorator import cache
 from sqlalchemy import func, select
 
 from slr_bot.db import app_reviews_table, app_upsert_review, engine
+from slr_bot import session
 
 router = APIRouter(
     prefix="/rating",

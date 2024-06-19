@@ -8,7 +8,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 def get_main_menu() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="Разметить элементы тела на видео")
+    # kb.button(text="Разметить элементы тела на видео")
     kb.button(text="Распознавание РЖЯ (1 видео)")
     kb.button(text="Оценить бота")
     kb.button(text="Посмотреть рейтинг бота")

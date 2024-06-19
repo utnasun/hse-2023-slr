@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message
 
-from hse_slr.models.utils import SLInference, make_prediction
+from slr_bot import session
 
 router = Router()
 
@@ -15,8 +15,6 @@ CONFIG_PATH = (
     Path(__file__).absolute().parent.parent.parent
     / "hse_slr/models/configs/config.json"
 )
-
-inference_thread = SLInference(CONFIG_PATH)
 
 
 class PredictVideo(StatesGroup):
@@ -53,17 +51,14 @@ async def video_downloaded(message: Message, state: FSMContext, bot):
         text="Сейчас модель попытается распознать РЖЯ с Вашего видео. Ожидайте, пожалуйста!"
     )
 
-    inference_thread.start()
-    res = make_prediction(inference_thread, file_dir_with_timestamp)
+    prediction = session.post(
+        f'http://{os.environ["APP_HOST"]}/recognize/recognize',
+        files={'file': open(file_dir_with_timestamp, 'rb')}
+    ).text
 
-    if res:
-        await message.answer(text=f"Результат распознавания: {res}")
+    if str(prediction) == '"Не смог распознать."':
+        await message.answer(text="Не смог распознать.")
     else:
-        await message.answer(
-            text="Извините, у нас не получилось распознать Ваше видео."
-        )
-
-    inference_thread.stop()
-
+        await message.answer(text=f"Распознанный текст: {str(prediction)}")
     os.remove(file_dir_with_timestamp)
     await state.clear()
